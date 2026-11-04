@@ -1,18 +1,15 @@
 <!doctype html>
 <html lang="vi">
     <head>
-        <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-02ZJV73XRP"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-02ZJV73XRP');
-</script>
-</script>
-</script>
+        <!-- Google Tag Manager -->
+        <script>
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-MWLDZ8RJ');
         </script>
+        <!-- End Google Tag Manager -->
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
         <meta name="description" content="TUEHI GEMSTONE — Đeo đá, đúng gu. Khám phá vòng đá tự nhiên, custom theo sở thích và chọn vòng theo gu riêng."/>
@@ -4455,92 +4452,11 @@
         </style>
     </head>
     <body>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=GTM-MWLDZ8RJ"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){ dataLayer.push(arguments); }
-if (typeof window.gtag === 'undefined') {
-    gtag('js', new Date());
-    gtag('config', 'GTM-MWLDZ8RJ');
-}
-
-function trackViewItem(product) {
-    gtag('event', 'view_item', {
-        currency: 'VND',
-        value: product.price,
-        items: [{
-            item_id: product.id,
-            item_name: product.name,
-            price: product.price,
-            item_category: product.cat || 'Gemstone'
-        }]
-    });
-}
-
-function trackAddToCart(product) {
-    gtag('event', 'add_to_cart', {
-        currency: 'VND',
-        value: product.price,
-        items: [{
-            item_id: product.id,
-            item_name: product.name,
-            price: product.price,
-            quantity: product.qty || 1
-        }]
-    });
-}
-
-function trackSearch(searchTerm) {
-    gtag('event', 'search', {
-        search_term: searchTerm
-    });
-}
-
-function trackQuizComplete(elementName) {
-    gtag('event', 'complete_quiz', {
-        element_result: elementName
-    });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.product-card').forEach(card => {
-        const getProductData = () => ({
-            id: card.dataset.id || 'sp-unknown',
-            name: card.dataset.name || card.querySelector('h3')?.innerText || 'Vòng đá',
-            price: parseInt(card.dataset.price || 0),
-            cat: card.dataset.cat || 'Gemstone'
-        });
-
-        const btnAdd = card.querySelector('.btn-add, .btn-primary');
-        if (btnAdd) {
-            btnAdd.addEventListener('click', () => {
-                trackAddToCart(getProductData());
-            });
-        }
-    });
-
-    const searchInput = document.querySelector('#searchInput, input[type="text"]');
-    if (searchInput) {
-        let searchTimer;
-        searchInput.addEventListener('input', (e) => {
-            clearTimeout(searchTimer);
-            const query = e.target.value.trim();
-            if (query.length >= 2) {
-                searchTimer = setTimeout(() => {
-                    trackSearch(query);
-                }, 800);
-            }
-        });
-    }
-
-    document.querySelectorAll('.quiz-option').forEach(option => {
-        option.addEventListener('click', () => {
-            const element = option.dataset.element || option.querySelector('b')?.innerText || 'Chưa rõ';
-            trackQuizComplete(element);
-        });
-    });
-});
-</script>
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MWLDZ8RJ"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+        <!-- Event tracking is sent to GTM through dataLayer in the main application script. -->
         <div id="loader" class="loader">
             <img class="loader-logo" data-k="logo" alt="TUEHI">
             <div class="loader-mark">TUEHI</div>
@@ -5798,6 +5714,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 toast(state.wishlist.includes(id) ? 'Đã lưu vào yêu thích.' : 'Đã bỏ khỏi yêu thích.')
             }
             function addCart(id) {
+                const product = state.products.find(x => x.id === id);
+                if (product && window.dataLayer) {
+                    window.dataLayer.push({ ecommerce: null });
+                    window.dataLayer.push({
+                        event: 'add_to_cart',
+                        ecommerce: {
+                            currency: 'VND',
+                            value: Number(product.price) || 0,
+                            items: [{
+                                item_id: product.id,
+                                item_name: product.name,
+                                item_category: product.category || product.stone || 'Gemstone',
+                                price: Number(product.price) || 0,
+                                quantity: 1
+                            }]
+                        }
+                    });
+                }
                 const found = state.cart.find(x => x.id === id);
                 if (found)
                     found.qty++;
@@ -6148,6 +6082,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 const p = state.products.find(x => x.id === id);
                 if (!p)
                     return;
+                if (window.dataLayer) {
+                    window.dataLayer.push({ ecommerce: null });
+                    window.dataLayer.push({
+                        event: 'view_item',
+                        ecommerce: {
+                            currency: 'VND',
+                            value: Number(p.price) || 0,
+                            items: [{
+                                item_id: p.id,
+                                item_name: p.name,
+                                item_category: p.category || p.stone || 'Gemstone',
+                                price: Number(p.price) || 0,
+                                quantity: 1
+                            }]
+                        }
+                    });
+                }
                 const imgs = p.images || [];
                 const isBan = p.id.includes('-VB');
                 const rows = [['Mã sản phẩm', p.id], ['Loại', p.category], ['Loại đá', p.stone], ['Màu sắc', (p.colors || []).join(', ')], [isBan && p.id !== 'TUEHI-VB003' && p.beadSize ? 'Kích thước bản' : 'Kích thước hạt', p.beadSize], ['Size (ni tay)', (p.sizes || []).join(' · ')], ['Mệnh tham khảo', (p.fengShuiReference || []).join(' – ')]].filter(r => r[1]);
@@ -6220,7 +6171,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 return state.products.filter(p => p.price != null).map(p => [sc(p), p]).sort( (x, y) => y[0] - x[0] || x[1].price - y[1].price).slice(0, 3).map(x => x[1])
             }
             function search() {
-                const q = $('#searchInput').value.trim().toLowerCase();
+                const rawQuery = $('#searchInput').value.trim();
+                clearTimeout(window.__tuehiSearchTrackTimer);
+                if (rawQuery.length >= 2) {
+                    window.__tuehiSearchTrackTimer = setTimeout(() => {
+                        if (window.dataLayer) {
+                            window.dataLayer.push({ event: 'search', search_term: rawQuery });
+                        }
+                    }, 800);
+                }
+                const q = rawQuery.toLowerCase();
                 const pr = state.products.filter(p => `${p.name} ${p.stone} ${(p.colors || []).join(' ')}`.toLowerCase().includes(q)).slice(0, 6);
                 const po = POSTS.filter(p => `${p.title} ${p.cat}`.toLowerCase().includes(q)).slice(0, 4);
                 $('#searchResults').innerHTML = q ? pr.map(p => `<div class="search-result" data-sp="${p.id}"><span>${p.name}</span><b>${money(p.price, state.lang === 'en')}</b></div>`).join('') + po.map(p => `<div class="search-result" data-post="${p.slug}"><span>📖 ${p.title}</span><b>${p.cat}</b></div>`).join('') : '<p style="color:var(--muted)">Nhập tên sản phẩm, đá, màu sắc hoặc chủ đề bài viết.</p>';
@@ -6395,6 +6355,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 box.hidden = false;
                 function step() {
                     if (i >= QZ.length) {
+                        if (window.dataLayer) {
+                            window.dataLayer.push({
+                                event: 'complete_quiz',
+                                quiz_name: 'find_your_gu',
+                                element_result: ans.join(' | ')
+                            });
+                        }
                         const r = quizPicks(ans);
                         box.innerHTML = `<div class="qz-top"><span>KẾT QUẢ</span><span>${QZ.length}/${QZ.length}</span></div><div class="qz-bar"><i style="width:100%"></i></div><div class="quiz-question">3 chiếc vòng đúng gu của bạn</div><div class="qr-chips">${ans.map(a => `<span>${a}</span>`).join('')}</div>${r.map( (x, n) => {
                             const im = x.p.images && x.p.images[0];
@@ -6625,9 +6592,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.dataLayer && window.dataLayer.push(Object.assign({
                         event: name
                     }, params))
-                } catch (e) {}
-                try {
-                    typeof window.gtag === 'function' && window.gtag('event', name, params)
                 } catch (e) {}
                 try {
                     typeof window.va === 'function' && window.va('event', {
