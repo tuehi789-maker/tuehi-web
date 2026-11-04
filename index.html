@@ -4455,6 +4455,92 @@
         </style>
     </head>
     <body>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-02ZJV73XRP"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){ dataLayer.push(arguments); }
+if (typeof window.gtag === 'undefined') {
+    gtag('js', new Date());
+    gtag('config', 'G-02ZJV73XRP');
+}
+
+function trackViewItem(product) {
+    gtag('event', 'view_item', {
+        currency: 'VND',
+        value: product.price,
+        items: [{
+            item_id: product.id,
+            item_name: product.name,
+            price: product.price,
+            item_category: product.cat || 'Gemstone'
+        }]
+    });
+}
+
+function trackAddToCart(product) {
+    gtag('event', 'add_to_cart', {
+        currency: 'VND',
+        value: product.price,
+        items: [{
+            item_id: product.id,
+            item_name: product.name,
+            price: product.price,
+            quantity: product.qty || 1
+        }]
+    });
+}
+
+function trackSearch(searchTerm) {
+    gtag('event', 'search', {
+        search_term: searchTerm
+    });
+}
+
+function trackQuizComplete(elementName) {
+    gtag('event', 'complete_quiz', {
+        element_result: elementName
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.product-card').forEach(card => {
+        const getProductData = () => ({
+            id: card.dataset.id || 'sp-unknown',
+            name: card.dataset.name || card.querySelector('h3')?.innerText || 'Vòng đá',
+            price: parseInt(card.dataset.price || 0),
+            cat: card.dataset.cat || 'Gemstone'
+        });
+
+        const btnAdd = card.querySelector('.btn-add, .btn-primary');
+        if (btnAdd) {
+            btnAdd.addEventListener('click', () => {
+                trackAddToCart(getProductData());
+            });
+        }
+    });
+
+    const searchInput = document.querySelector('#searchInput, input[type="text"]');
+    if (searchInput) {
+        let searchTimer;
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimer);
+            const query = e.target.value.trim();
+            if (query.length >= 2) {
+                searchTimer = setTimeout(() => {
+                    trackSearch(query);
+                }, 800);
+            }
+        });
+    }
+
+    document.querySelectorAll('.quiz-option').forEach(option => {
+        option.addEventListener('click', () => {
+            const element = option.dataset.element || option.querySelector('b')?.innerText || 'Chưa rõ';
+            trackQuizComplete(element);
+        });
+    });
+});
+</script>
         <div id="loader" class="loader">
             <img class="loader-logo" data-k="logo" alt="TUEHI">
             <div class="loader-mark">TUEHI</div>
